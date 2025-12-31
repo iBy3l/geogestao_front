@@ -28,11 +28,33 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
+  <link
+  href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+  rel="stylesheet"
+/>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  
 
   <title>geogestao_front</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script>
+  window.initMapbox = function (token) {
+    mapboxgl.accessToken = token;
+
+    const map = new mapboxgl.Map({
+      container: 'mapbox-map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-46.6333, -23.5505], // SP
+      zoom: 10
+    });
+
+    window._mapboxMap = map;
+  };
+</script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
