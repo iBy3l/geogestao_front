@@ -6,6 +6,7 @@ export 'forms/forms_param.dart';
 export 'forms/get_list_forms_param.dart';
 export 'forms_view/forms_view_entity.dart';
 export 'forms_view/forms_view_param.dart';
+export 'maps/maps.dart';
 export 'update_file/update_file_entity.dart';
 export 'update_file/update_file_param.dart';
 export 'user/user_entity.dart';

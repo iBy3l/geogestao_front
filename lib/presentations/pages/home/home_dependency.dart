@@ -1,3 +1,5 @@
+import 'package:geogestao_front/presentations/pages/maps/maps_module.dart';
+
 import '/core/core.dart';
 import '/data/data.dart';
 import '/domain/domain.dart';
@@ -7,7 +9,7 @@ class HomeDependency extends Module {
   static const String routeName = '/home/';
 
   @override
-  List<Module> get imports => [CoreModule()];
+  List<Module> get imports => [CoreModule(), MapsModule()];
 
   @override
   void binds(Injector i) {

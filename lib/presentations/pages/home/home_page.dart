@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:geogestao_front/core/core.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:geogestao_front/presentations/pages/maps/widgets/map_widget.dart';
 
 import '/presentations/pages/home/controllers/home_controller.dart';
 import '/shared/shared.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final HomeController controller;
   const HomePage({super.key, required this.controller});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    debugPrint('key map => ${StringsConst().mapbox}');
     return ResponsiveLayout(
-      metas: controller.meta,
+      metas: widget.controller.meta,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: MapboxMap(
-          initialCameraPosition: const CameraPosition(target: LatLng(-23.55052, -46.633308), zoom: 10),
-          accessToken: StringsConst().mapbox,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 2, blurRadius: 5, offset: const Offset(0, 3))],
+          ),
+          height: 500,
+          width: double.infinity,
+          child: MapPage(controller: widget.controller.mapController),
         ),
       ),
     );
   }
 }
-
-// lib/shared/widgets/map

@@ -20,6 +20,18 @@
     rel="stylesheet"
   />
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script>
+  window.initMapbox = function (token) {
+    mapboxgl.accessToken = token;
+
+    window._map = new mapboxgl.Map({
+      container: 'mapbox-map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-46.6333, -23.5505],
+      zoom: 10
+    });
+  };
+</script>
 
   <title>GeoGestão</title>
   <link rel="manifest" href="manifest.json">
