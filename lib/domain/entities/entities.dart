@@ -11,3 +11,5 @@ export 'update_file/update_file_entity.dart';
 export 'update_file/update_file_param.dart';
 export 'user/user_entity.dart';
 export 'utils/drop_item_entity.dart';
+export 'seller/seller_entity.dart';
+export 'seller/seller_param.dart';

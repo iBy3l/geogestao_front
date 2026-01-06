@@ -6,3 +6,4 @@ export 'home/home.dart';
 export 'update_file/update_file.dart';
 export 'forms/forms.dart';
 export 'forms_view/forms_view.dart';
+export 'seller/seller.dart';
