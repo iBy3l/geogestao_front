@@ -23,9 +23,16 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), spreadRadius: 2, blurRadius: 5, offset: const Offset(0, 3))],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withAlpha(128),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
-          height: 500,
+          height: double.infinity,
           width: double.infinity,
           child: MapPage(controller: widget.controller.mapController),
         ),

@@ -26,16 +26,27 @@ class _MapViewState extends State<MapView> {
 
               accessToken: widget.controller.mapboxToken,
               styleString: MapboxStyles.MAPBOX_STREETS,
-              initialCameraPosition: const CameraPosition(target: LatLng(-23.5505, -46.6333), zoom: 11),
+              initialCameraPosition: const CameraPosition(
+                target: LatLng(-23.5505, -46.6333),
+                zoom: 11,
+              ),
               onMapCreated: widget.controller.onMapCreated,
-              onCameraIdle: widget.controller.onCameraIdle, // ✅ ESSENCIAL
+              onCameraIdle: widget.controller.onCameraIdle,
             ),
 
             /// MARKERS
             IgnorePointer(
               ignoring: true,
               child: Stack(
-                children: widget.controller.screenMarkers.map((m) => MapMarkerWidget(position: m.screenPosition, color: m.color)).toList(),
+                children: widget.controller.screenMarkers
+                    .map(
+                      (m) => MapMarkerWidget(
+                        position: m.screenPosition,
+                        color: m.color,
+                        markerId: m.id,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ],

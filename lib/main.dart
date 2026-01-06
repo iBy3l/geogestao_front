@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -8,9 +9,11 @@ import 'apps/apps.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
 
   await dotenv.load(fileName: 'assets/.env');
+  if (!kIsWeb) {
+    windowManager.setFullScreen(true);
+  }
 
   usePathUrlStrategy();
   initializeSEO();

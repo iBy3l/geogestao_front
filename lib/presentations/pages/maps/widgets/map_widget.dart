@@ -15,32 +15,42 @@ class MapPage extends StatelessWidget {
     return AnimatedBuilder(
       animation: controller,
       builder: (_, __) {
-        return Scaffold(
-          body: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            padding: controller.isFullscreen ? EdgeInsets.zero : const EdgeInsets.all(16),
-            child: Stack(
-              children: [
-                MapView(controller: controller),
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          padding: controller.isFullscreen
+              ? EdgeInsets.zero
+              : const EdgeInsets.all(16),
+          child: Stack(
+            children: [
+              MapView(controller: controller),
 
-                if (!controller.isFullscreen)
-                  Positioned(
-                    top: 16,
-                    left: 16,
-
-                    child: SearchBox(onSubmit: controller.search, onChanged: controller.autocomplete),
-                  ),
-
-                Positioned(right: 16, bottom: 100, child: MapControls(controller: controller)),
-
+              if (!controller.isFullscreen)
                 Positioned(
                   top: 16,
-                  right: 16,
-                  child: AnimatedMapButton(onTap: controller.toggleFullscreen, icon: const Icon(Icons.fullscreen)),
+                  left: 16,
+
+                  child: SearchBox(
+                    onSubmit: controller.search,
+                    onChanged: controller.autocomplete,
+                  ),
                 ),
-              ],
-            ),
+
+              Positioned(
+                right: 16,
+                bottom: 100,
+                child: MapControls(controller: controller),
+              ),
+
+              Positioned(
+                top: 16,
+                right: 16,
+                child: AnimatedMapButton(
+                  onTap: controller.toggleFullscreen,
+                  icon: const Icon(Icons.fullscreen),
+                ),
+              ),
+            ],
           ),
         );
       },

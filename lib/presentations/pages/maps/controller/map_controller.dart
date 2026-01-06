@@ -13,7 +13,11 @@ class MapController extends ChangeNotifier {
   final GenerateRandomMarkersUsecase generateMarkers;
   final AutocompleteAddressUsecase autocompleteAddress;
 
-  MapController({required this.searchAddress, required this.generateMarkers, required this.autocompleteAddress});
+  MapController({
+    required this.searchAddress,
+    required this.generateMarkers,
+    required this.autocompleteAddress,
+  });
   MapboxMapController? mapbox;
   final markers = <MapMarker>[];
 
@@ -47,24 +51,6 @@ class MapController extends ChangeNotifier {
     _updateScreenMarkers();
   }
 
-  Future<void> _updateScreenMarkers() async {
-    if (mapbox == null) return;
-    if (markers.isEmpty) return;
-
-    final latLngs = markers.map((m) => m.position).toList();
-    final points = await mapbox!.toScreenLocationBatch(latLngs);
-
-    screenMarkers
-      ..clear()
-      ..addAll(
-        List.generate(points.length, (i) {
-          return ScreenMarker(id: markers[i].id, screenPosition: Point(points[i].x.toDouble(), points[i].y.toDouble()), color: Colors.red);
-        }),
-      );
-
-    notifyListeners();
-  }
-
   Future<void> autocomplete(String value) async {
     final result = await autocompleteAddress(value, mapboxToken);
 
@@ -73,19 +59,6 @@ class MapController extends ChangeNotifier {
         ..clear()
         ..addAll(list);
       notifyListeners();
-    }, (_) {});
-  }
-
-  Future<void> search(String value) async {
-    suggestions.clear();
-    notifyListeners();
-
-    final result = await searchAddress(value, mapboxToken);
-    if (mapbox == null) return;
-
-    result.ways((success) async {
-      final latLng = LatLng(success?.latitude ?? 0, success?.longitude ?? 0);
-      await mapbox!.animateCamera(CameraUpdate.newLatLngZoom(latLng, 15));
     }, (_) {});
   }
 
@@ -123,17 +96,39 @@ class MapController extends ChangeNotifier {
     final lats = markers.map((m) => m.position.latitude);
     final lngs = markers.map((m) => m.position.longitude);
 
-    final bounds = LatLngBounds(southwest: LatLng(lats.reduce(min), lngs.reduce(min)), northeast: LatLng(lats.reduce(max), lngs.reduce(max)));
+    final bounds = LatLngBounds(
+      southwest: LatLng(lats.reduce(min), lngs.reduce(min)),
+      northeast: LatLng(lats.reduce(max), lngs.reduce(max)),
+    );
 
-    await mapbox!.animateCamera(CameraUpdate.newLatLngBounds(bounds, left: 50, right: 50, top: 50, bottom: 50));
+    await mapbox!.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        bounds,
+        left: 50,
+        right: 50,
+        top: 50,
+        bottom: 50,
+      ),
+    );
   }
 
-  final LatLngBounds saoPauloBounds = LatLngBounds(southwest: LatLng(-24.008, -46.825), northeast: LatLng(-23.356, -46.365));
+  final LatLngBounds saoPauloBounds = LatLngBounds(
+    southwest: LatLng(-24.008, -46.825),
+    northeast: LatLng(-23.356, -46.365),
+  );
 
   Future<void> fitSaoPaulo() async {
     if (mapbox == null) return;
 
-    await mapbox!.animateCamera(CameraUpdate.newLatLngBounds(saoPauloBounds, left: 50, right: 50, top: 50, bottom: 50));
+    await mapbox!.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        saoPauloBounds,
+        left: 50,
+        right: 50,
+        top: 50,
+        bottom: 50,
+      ),
+    );
   }
 
   bool _isFullscreen = false;
@@ -161,5 +156,65 @@ class MapController extends ChangeNotifier {
     } else {
       toggleFullscreenDesktop();
     }
+  }
+
+  MapMarker? searchMarker;
+
+  Future<void> search(String value) async {
+    suggestions.clear();
+    notifyListeners();
+
+    final result = await searchAddress(value, mapboxToken);
+    if (mapbox == null) return;
+
+    result.ways((success) async {
+      if (success == null) return;
+
+      final latLng = LatLng(success.latitude, success.longitude);
+
+      // move câmera
+      await mapbox!.animateCamera(
+        CameraUpdate.newLatLngZoom(latLng, 17), // zoom de rua
+      );
+
+      // cria ou move marker
+      searchMarker = MapMarker(id: 'search', position: latLng);
+
+      _updateScreenMarkers();
+    }, (_) {});
+  }
+
+  Future<void> _updateScreenMarkers() async {
+    if (mapbox == null) return;
+
+    final allMarkers = <MapMarker>[
+      ...markers,
+      if (searchMarker != null) searchMarker!,
+    ];
+
+    if (allMarkers.isEmpty) return;
+
+    final latLngs = allMarkers.map((m) => m.position).toList();
+    final points = await mapbox!.toScreenLocationBatch(latLngs);
+
+    screenMarkers
+      ..clear()
+      ..addAll(
+        List.generate(points.length, (i) {
+          return ScreenMarker(
+            id: allMarkers[i].id,
+            screenPosition: Point(
+              points[i].x.toDouble(),
+              points[i].y.toDouble(),
+            ),
+            color: allMarkers[i].id == 'search'
+                ? Colors
+                      .blue // 🔵 marcador da rua
+                : Colors.red,
+          );
+        }),
+      );
+
+    notifyListeners();
   }
 }
