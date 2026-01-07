@@ -1,6 +1,10 @@
 class SellerParam {
-  // final Example example;
-  // final Example2 example2;
+  final String code;
+  final String name;
+  final String orgId;
+  SellerParam({required this.code, required this.name, required this.orgId});
 
-  // SellerParam({required this.example, required this.example2});
+  Map<String, dynamic> toMap() {
+    return {"p_code": code, "p_name": name, "p_org_id": orgId};
+  }
 }

@@ -217,4 +217,21 @@ class MapController extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Offset? contextMenuPosition;
+
+  LatLng? contextLatLng;
+
+  bool get isContextMenuOpen => contextMenuPosition != null;
+  void openContextMenu({required Offset position, required LatLng latLng}) {
+    contextMenuPosition = position;
+    contextLatLng = latLng;
+    notifyListeners();
+  }
+
+  void closeContextMenu() {
+    contextMenuPosition = null;
+    contextLatLng = null;
+    notifyListeners();
+  }
 }

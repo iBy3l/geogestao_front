@@ -11,13 +11,13 @@ class SellerDatasourceImpl extends SellerDatasource {
 
   SellerDatasourceImpl(this.gateway);
 
-  static const String _endpoint = '';
+  static const String _endpointCreateSeller = '/rest/v1/rpc/create_seller';
 
   @override
   Future<Map<String, dynamic>> createSeller({
     required SellerParam param,
   }) async {
-    final response = await gateway.post(_endpoint, {});
+    final response = await gateway.post(_endpointCreateSeller, param.toMap());
     return response.data;
   }
 }
