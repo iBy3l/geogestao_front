@@ -18,6 +18,7 @@ class ClientDependency extends Module {
     i.addLazySingleton<ClientRepository>(ClientRepositoryImpl.new);
     i.addLazySingleton(CreateClientUsecaseImpl.new);
     i.addLazySingleton(GetListClientsUsecaseImpl.new);
+    i.addLazySingleton(ImportClientsUsecase.new);
     i.addLazySingleton(ClientController.new);
   }
 

@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+
 import '/core/core.dart';
 
 class ElevatedButtonWidget extends StatefulWidget {
-  const ElevatedButtonWidget({super.key, required this.onPressed, this.text, this.child, this.iconSufix, this.iconPrefix, this.fixedSize, this.enable = true, this.style});
+  const ElevatedButtonWidget({
+    super.key,
+    required this.onPressed,
+    this.text,
+    this.child,
+    this.iconSufix,
+    this.iconPrefix,
+    this.fixedSize,
+    this.enable = true,
+    this.style,
+  });
 
   final Future<void> Function()? onPressed;
   final String? text;
@@ -44,7 +55,9 @@ class _ElevatedButtonWidgetState extends State<ElevatedButtonWidget> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         fixedSize: widget.fixedSize,
       ).copyWith(
-        backgroundColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+        backgroundColor: WidgetStateProperty.resolveWith<Color>((
+          Set<WidgetState> states,
+        ) {
           if (states.contains(WidgetState.disabled)) {
             return theme.colorScheme.outline.withValues(alpha: 0.5);
           }
@@ -58,23 +71,44 @@ class _ElevatedButtonWidgetState extends State<ElevatedButtonWidget> {
         }),
         foregroundColor: WidgetStateProperty.all(CustomColors.white),
         overlayColor: WidgetStateProperty.all(
-          theme.colorScheme.primary.withValues(alpha: 0.1), // efeito de clique suave
+          theme.colorScheme.primary.withValues(
+            alpha: 0.1,
+          ), // efeito de clique suave
         ),
       );
     }
 
     final child = _isLoading
-        ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: theme.colorScheme.outline, strokeWidth: 2))
+        ? SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              color: theme.colorScheme.outline,
+              strokeWidth: 2,
+            ),
+          )
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 8,
             children: [
-              if (widget.iconPrefix != null) Icon(widget.iconPrefix, color: theme.colorScheme.onPrimary),
-              if (widget.text != null) Text(widget.text!, style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onPrimary)),
-              if (widget.iconSufix != null) Icon(widget.iconSufix, color: theme.colorScheme.onPrimary),
+              if (widget.iconPrefix != null)
+                Icon(widget.iconPrefix, color: theme.colorScheme.onPrimary),
+              if (widget.text != null)
+                Text(
+                  widget.text!,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                ),
+              if (widget.iconSufix != null)
+                Icon(widget.iconSufix, color: theme.colorScheme.onPrimary),
             ],
           );
 
-    return ElevatedButton(style: widget.style ?? styleFrom(), onPressed: widget.enable ? _handlePress : null, child: widget.child ?? child);
+    return ElevatedButton(
+      style: widget.style ?? styleFrom(),
+      onPressed: widget.enable ? _handlePress : null,
+      child: widget.child ?? child,
+    );
   }
 }

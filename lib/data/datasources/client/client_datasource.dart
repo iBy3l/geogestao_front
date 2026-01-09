@@ -11,6 +11,8 @@ abstract class ClientDatasource {
     String? cnpj,
     ClientStatus? status,
   });
+
+  Future<int> importClients({required List<ClientParam> param});
 }
 
 class ClientDatasourceImpl extends ClientDatasource {
@@ -22,6 +24,7 @@ class ClientDatasourceImpl extends ClientDatasource {
   static const String _endpointUpdate = '/rest/v1/rpc/update_client';
   static const String _endpointDelete = '/rest/v1/rpc/delete_client';
   static const String _endpointGetAll = '/rest/v1/rpc/get_clients';
+  static const String _endpointImport = '/rest/v1/rpc/import_clients';
 
   @override
   Future<String> createClient({required ClientParam param}) async {
@@ -41,5 +44,13 @@ class ClientDatasourceImpl extends ClientDatasource {
       if (status != null) 'p_status': status.name,
     });
     return List<Map<String, dynamic>>.from(response.data);
+  }
+
+  @override
+  Future<int> importClients({required List<ClientParam> param}) async {
+    final response = await gateway.post(_endpointImport, {
+      'p_clients': param.map((e) => e.toMap()).toList(),
+    });
+    return response.data;
   }
 }

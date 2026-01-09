@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:geogestao_front/shared/widgets/buttons/elevated_button_widget.dart';
 
 import '/core/core.dart';
 import '/shared/widgets/spaces/space_widget.dart';
 
 class ResponsiveLayout extends StatefulWidget {
   final Widget child;
+  final Function()? import;
   final Meta? metas;
-  const ResponsiveLayout({super.key, required this.child, this.metas});
+  const ResponsiveLayout({
+    super.key,
+    required this.child,
+    this.metas,
+    this.import,
+  });
 
   @override
   State<ResponsiveLayout> createState() => _ResponsiveLayoutState();
@@ -73,6 +80,8 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
                               valueListenable: _menuController.isExpanded,
                               builder: (context, value, c) {
                                 return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     AnimatedContainer(
                                       duration: const Duration(
@@ -115,6 +124,18 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
                                   ],
                                 );
                               },
+                            ),
+                            Row(
+                              children: [
+                                ElevatedButtonWidget(
+                                  fixedSize: const Size(200, 40),
+                                  onPressed: () async => widget.import?.call(),
+                                  iconPrefix: Icons.upload_file,
+
+                                  child: Text('Importar CSV'),
+                                ),
+                                SpaceWidget.large(),
+                              ],
                             ),
                           ],
                         ),

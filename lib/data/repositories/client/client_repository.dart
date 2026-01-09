@@ -37,4 +37,14 @@ class ClientRepositoryImpl extends ClientRepository {
       return clients;
     });
   }
+
+  @override
+  Future<BaseWhich<BaseFailure, int>> importClients({
+    required List<ClientParam> param,
+  }) async {
+    return tryExecute(() async {
+      final response = await datasource.importClients(param: param);
+      return response;
+    });
+  }
 }

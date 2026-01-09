@@ -12,4 +12,8 @@ abstract class ClientRepository extends BaseRepository {
     String? cnpj,
     ClientStatus? status,
   });
+
+  Future<BaseWhich<BaseFailure, int>> importClients({
+    required List<ClientParam> param,
+  });
 }
