@@ -13,3 +13,5 @@ export 'user/user_entity.dart';
 export 'utils/drop_item_entity.dart';
 export 'seller/seller_entity.dart';
 export 'seller/seller_param.dart';
+export 'client/client_entity.dart';
+export 'client/client_param.dart';

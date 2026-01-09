@@ -5,9 +5,11 @@ import 'package:http/http.dart' as http;
 abstract class MapboxGeocodingDatasource {
   Future<Map<String, dynamic>> search(String query, String token);
   Future<Map<String, dynamic>> autocomplete(String query, String token);
+  Future<Map<String, dynamic>> getAddressByCep(String cep);
 }
 
 class MapboxGeocodingDatasourceImpl implements MapboxGeocodingDatasource {
+  static const _baseUrl = 'https://brasilapi.com.br/api/cep/v1';
   @override
   Future<Map<String, dynamic>> search(String query, String token) async {
     final url = Uri.parse(
@@ -51,5 +53,19 @@ class MapboxGeocodingDatasourceImpl implements MapboxGeocodingDatasource {
     if (decoded is! Map<String, dynamic>) return {};
 
     return decoded;
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAddressByCep(String cep) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/$cep'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao buscar CEP');
+    }
+
+    return jsonDecode(response.body);
   }
 }

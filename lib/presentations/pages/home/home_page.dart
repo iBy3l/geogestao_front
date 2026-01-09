@@ -34,7 +34,11 @@ class _HomePageState extends State<HomePage> {
           ),
           height: double.infinity,
           width: double.infinity,
-          child: MapPage(controller: widget.controller.mapController),
+          child: MapPage(
+            controller: widget.controller.mapController,
+            clientController: widget.controller.clientController,
+            cepController: widget.controller.cepController,
+          ),
         ),
       ),
     );

@@ -51,6 +51,11 @@ class MapController extends ChangeNotifier {
     _updateScreenMarkers();
   }
 
+  moveToLocation(LatLng latLng, double zoom) async {
+    if (mapbox == null) return;
+    await mapbox!.animateCamera(CameraUpdate.newLatLngZoom(latLng, zoom));
+  }
+
   Future<void> autocomplete(String value) async {
     final result = await autocompleteAddress(value, mapboxToken);
 
@@ -131,6 +136,31 @@ class MapController extends ChangeNotifier {
     );
   }
 
+  String? _lastClientsHash;
+
+  void setClientMarkers(List<ClientEntity> clients) {
+    final hash = clients.map((c) => c.id).join(',');
+
+    if (_lastClientsHash == hash) return; // 🚫 evita loop
+
+    _lastClientsHash = hash;
+
+    markers
+      ..clear()
+      ..addAll(
+        clients
+            .where((c) => c.longitude != null)
+            .map(
+              (c) => MapMarker(
+                id: c.id,
+                position: LatLng(c.latitude, c.longitude),
+              ),
+            ),
+      );
+
+    _updateScreenMarkers();
+  }
+
   bool _isFullscreen = false;
   bool get isFullscreen => _isFullscreen;
 
@@ -159,6 +189,17 @@ class MapController extends ChangeNotifier {
   }
 
   MapMarker? searchMarker;
+
+  Future<LatLng?> searchAutocomplete(String query) async {
+    final result = await searchAddress(query, mapboxToken);
+    LatLng? latLng;
+    result.ways((success) {
+      if (success != null) {
+        latLng = LatLng(success.latitude, success.longitude);
+      }
+    }, (_) {});
+    return latLng;
+  }
 
   Future<void> search(String value) async {
     suggestions.clear();

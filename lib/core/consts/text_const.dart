@@ -13,8 +13,8 @@ class TextConst {
   String saveDraft = 'Salvar Rascunho';
 
   String home = 'Início';
-//entregas para retirar
-//remove
+  //entregas para retirar
+  //remove
   String remove = 'Remover';
   //Salvar alterações
   String saveChanges = 'Salvar Alterações';
@@ -42,9 +42,11 @@ class TextConst {
   // Selecionar Arquivo
   String selectFile = 'Selecionar Arquivo';
 
-  String uploadSpreadsheetSubtitle = 'Envie sua planilha para começar a análise de dados';
+  String uploadSpreadsheetSubtitle =
+      'Envie sua planilha para começar a análise de dados';
   // Arraste sua planilha aqui ou clique para selecionar
-  String dragOrClickToSelect = 'Arraste sua planilha aqui ou clique para selecionar';
+  String dragOrClickToSelect =
+      'Arraste sua planilha aqui ou clique para selecionar';
   // Formatos suportados: .xlsx, .xls, .csv
 
   String supportedFormats = 'Formatos suportados';
@@ -113,8 +115,8 @@ class TextConst {
   //Acesso Rápido
   String quickAccess = 'Acesso Rápido';
 
-  String appName = 'Sympllizy';
-  //A Sympllizy é uma plataforma que conecta produtores rurais a prestadores de serviços
+  String appName = 'GeoGestão';
+  //A GeoGestão é uma plataforma que conecta produtores rurais a prestadores de serviços
   //Acesse sua conta
   String signInTitle = 'Acesse sua conta';
   //Insira suas credenciais para acessar sua conta
@@ -158,10 +160,10 @@ class TextConst {
   //Lembrar de mim
   String signInRememberMe = 'Lembrar de mim';
 
-  // Ao usar o Sympllizy, você concorda com nossos
+  // Ao usar o GeoGestão, você concorda com nossos
 
   // Termos de Serviço e Política de Privacidade
-  String signInTerms = 'Ao usar o Sympllizy, você concorda com nossos';
+  String signInTerms = 'Ao usar o GeoGestão, você concorda com nossos';
 
   // Termos de Serviço ;
   String signInTermsOfService = 'Termos de Serviço';
@@ -181,14 +183,15 @@ class TextConst {
   // Política de Privacidade
   String signInPrivacyPolicy = 'Política de Privacidade';
 
-  // © 2025 Sympllizy, Inc. All rights reserved.
-  String copyright = '© 2025 Sympllizy, Inc. Todos os direitos reservados.';
+  // © 2025 GeoGestão, Inc. All rights reserved.
+  String copyright = '© 2025 GeoGestão, Inc. Todos os direitos reservados.';
 
   //Esqueceu sua senha?
   String signInForgotPassword = 'Esqueceu sua senha?';
 
   //Spreadsheet data analysis made simple
-  String spreadsheetDataAnalysis = 'Automatizando processos. Simplificando decisões.';
+  String spreadsheetDataAnalysis =
+      'Automatizando processos. Simplificando decisões.';
   //Enter your credentials to access your account
   String signInSubtitle2 = 'Entre com suas credenciais para acessar sua conta';
   //Entrar
@@ -209,10 +212,12 @@ class TextConst {
   String verifyYourEmail = 'Verifique seu email';
   // We've sent a verification link to your email address
 
-  String verifyYourEmailSubtitle = 'Enviamos um link de verificação para o seu endereço de email';
+  String verifyYourEmailSubtitle =
+      'Enviamos um link de verificação para o seu endereço de email';
 
   // Account created successfully! Please check your inbox to complete registratio
-  String accountCreatedSuccessfully = 'Conta criada com sucesso! Verifique sua caixa de entrada para concluir o registro';
+  String accountCreatedSuccessfully =
+      'Conta criada com sucesso! Verifique sua caixa de entrada para concluir o registro';
 
   // Account created successfully
   String accountCreated = 'Conta criada com sucesso!';
@@ -223,8 +228,8 @@ class TextConst {
   // Check your email inbox
   String checkYourEmail = '1. Verifique sua caixa de entrada';
 
-  // Open the verification email from Sympllizy
-  String openVerificationEmail = '2. Abra o email de verificação da Sympllizy';
+  // Open the verification email from GeoGestão
+  String openVerificationEmail = '2. Abra o email de verificação da GeoGestão';
 
   //Click the verification link in the email
   String clickVerificationLink = '3. Clique no link de verificação no email';
@@ -315,12 +320,13 @@ class TextConst {
   // Selecionar
   String select = 'Selecionar';
 
-  // Aceito os Termos de Serviço da Sympllizy
-  String acceptTermsOfService = 'Aceito os Termos de Serviço da Sympllizy';
+  // Aceito os Termos de Serviço da GeoGestão
+  String acceptTermsOfService = 'Aceito os Termos de Serviço da GeoGestão';
   String accept = 'Aceito os';
 
-//signInAcceptTermsError
-  String signInAcceptTermsError = 'Você deve aceitar os termos de serviço e a política de privacidade para cadastrar-se.';
+  //signInAcceptTermsError
+  String signInAcceptTermsError =
+      'Você deve aceitar os termos de serviço e a política de privacidade para cadastrar-se.';
   // Texto do Termos de Serviço
   String textTermsOfService = '''
 Bem-vindo ao nosso aplicativo. Ao utilizar este serviço, você concorda com os seguintes termos e condições...

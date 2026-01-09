@@ -2,25 +2,28 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:geogestao_front/core/core.dart';
+import 'package:geogestao_front/presentations/pages/client/controllers/client_controller.dart';
+import 'package:geogestao_front/presentations/pages/client/states/client_state.dart';
 import 'package:geogestao_front/presentations/pages/maps/widgets/map_marker_widget.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../controller/map_controller.dart';
 
-class MapView extends StatefulWidget {
+class MapView extends StatelessWidget {
   final MapController controller;
+  final ClientController clientController;
 
-  const MapView({super.key, required this.controller});
+  const MapView({
+    super.key,
+    required this.controller,
+    required this.clientController,
+  });
 
-  @override
-  State<MapView> createState() => _MapViewState();
-}
-
-class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: widget.controller,
+      animation: controller,
       builder: (_, __) {
         return Stack(
           children: [
@@ -28,20 +31,20 @@ class _MapViewState extends State<MapView> {
               onPointerDown: (event) async {
                 if (event.kind == PointerDeviceKind.mouse &&
                     event.buttons == kSecondaryMouseButton) {
-                  if (widget.controller.mapbox == null) return;
-                  final latLng = await widget.controller.mapbox!.toLatLng(
+                  if (controller.mapbox == null) return;
+                  final latLng = await controller.mapbox!.toLatLng(
                     Point(event.localPosition.dx, event.localPosition.dy),
                   );
-                  widget.controller.openContextMenu(
+                  controller.openContextMenu(
                     position: event.localPosition,
                     latLng: latLng,
                   );
                 }
               },
               child: MapboxMap(
-                accessToken: widget.controller.mapboxToken,
-                onMapCreated: widget.controller.onMapCreated,
-                onCameraIdle: widget.controller.onCameraIdle,
+                accessToken: controller.mapboxToken,
+                onMapCreated: controller.onMapCreated,
+                onCameraIdle: controller.onCameraIdle,
                 initialCameraPosition: const CameraPosition(
                   target: LatLng(-23.5505, -46.6333),
                   zoom: 11,
@@ -49,20 +52,31 @@ class _MapViewState extends State<MapView> {
               ),
             ),
 
-            /// MARKERS
-            IgnorePointer(
-              ignoring: false,
-              child: Stack(
-                children: widget.controller.screenMarkers
-                    .map(
-                      (m) => MapMarkerWidget(
-                        position: m.screenPosition,
-                        color: m.color,
-                        markerId: m.id,
-                      ),
-                    )
-                    .toList(),
-              ),
+            BaseBuilder(
+              controller: clientController,
+              build: (context, state) {
+                if (state is ClientLoadingStates) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is ListClientsSuccessStates) {
+                  controller.setClientMarkers(state.clients);
+
+                  return IgnorePointer(
+                    ignoring: false,
+                    child: Stack(
+                      children: controller.screenMarkers.map((m) {
+                        return MapMarkerWidget(
+                          markerId: m.id,
+                          position: m.screenPosition, // ✅ pixels
+                          color: m.color,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
             ),
           ],
         );

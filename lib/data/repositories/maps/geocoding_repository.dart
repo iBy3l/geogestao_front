@@ -9,7 +9,10 @@ class GeocodingRepositoryImpl extends GeocodingRepository {
   GeocodingRepositoryImpl(this.datasource);
 
   @override
-  Future<BaseWhich<BaseFailure, LatLng?>> searchAddress(String query, String token) async {
+  Future<BaseWhich<BaseFailure, LatLng?>> searchAddress(
+    String query,
+    String token,
+  ) async {
     return tryExecute<LatLng?>(() async {
       final json = await datasource.search(query, token);
 
@@ -24,7 +27,10 @@ class GeocodingRepositoryImpl extends GeocodingRepository {
   }
 
   @override
-  Future<BaseWhich<BaseFailure, List<AddressSuggestion>>> autocomplete(String query, String token) async {
+  Future<BaseWhich<BaseFailure, List<AddressSuggestion>>> autocomplete(
+    String query,
+    String token,
+  ) async {
     return tryExecute(() async {
       final json = await datasource.autocomplete(query, token);
 
@@ -33,8 +39,19 @@ class GeocodingRepositoryImpl extends GeocodingRepository {
 
       return features.map<AddressSuggestion>((f) {
         final coords = f['geometry']['coordinates'];
-        return AddressSuggestion(label: f['place_name'], position: LatLng(coords[1], coords[0]));
+        return AddressSuggestion(
+          label: f['place_name'],
+          position: LatLng(coords[1], coords[0]),
+        );
       }).toList();
+    });
+  }
+
+  @override
+  Future<BaseWhich<BaseFailure, AddressModel>> cepAddress(String cep) async {
+    return tryExecute(() async {
+      final json = await datasource.getAddressByCep(cep);
+      return AddressModel.fromJson(json);
     });
   }
 }

@@ -14,22 +14,23 @@ class SignInController extends BaseController<SignInStates> {
   Meta meta = Meta(
     title: 'Acesse sua conta',
     description: 'Insira suas credenciais para acessar sua conta',
-    keywords: 'sympllizy, sign in, login, authentication, spreadsheet data analysis',
+    keywords:
+        'GeoGestão, sign in, login, authentication, spreadsheet data analysis',
     author: 'Your Name',
     viewport: 'width=device-width, initial-scale=1',
     robots: 'index, follow',
     ogTitle: 'Auth Template',
     ogDescription: 'This is the auth template',
-    ogImage: 'assets/images/logos/logo_sympllizy.png',
-    ogUrl: 'https://sympllizy.com/auth/sign-in/',
+    ogImage: 'assets/images/logos/logo_GeoGestão.png',
+    ogUrl: 'https://GeoGestão.com/auth/sign-in/',
     ogType: 'website',
-    ogSiteName: 'Sympllizy',
+    ogSiteName: 'GeoGestão',
     ogLocale: 'en_US',
     ogLocaleAlternate: 'es_ES',
-    h1: 'Sympllizy',
-    h2: 'Welcome to Sympllizy',
+    h1: 'GeoGestão',
+    h2: 'Welcome to GeoGestão',
     h3: 'Your task management platform',
-    h4: 'Get started with Sympllizy',
+    h4: 'Get started with GeoGestão',
     h5: 'Manage your tasks and projects efficiently',
     h6: 'Join us today',
   );
@@ -42,7 +43,12 @@ class SignInController extends BaseController<SignInStates> {
   Future<void> login(BuildContext context) async {
     if (formSignIn.currentState!.validate()) {
       emit(SignInLoadingStates());
-      final result = await _signInUsecase(AuthParam(email: emailController.text, password: passwordController.text));
+      final result = await _signInUsecase(
+        AuthParam(
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
       result.ways(
         (user) async {
           await storage.saveToken(user.accessToken);

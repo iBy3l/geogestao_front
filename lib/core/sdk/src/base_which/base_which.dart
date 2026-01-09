@@ -1,7 +1,10 @@
 sealed class BaseWhich<TError, TResult> {
   const BaseWhich();
 
-  T ways<T>(T Function(TResult result) ifResult, T Function(TError erro) ifError) {
+  T ways<T>(
+    T Function(TResult result) ifResult,
+    T Function(TError erro) ifError,
+  ) {
     return switch (this) {
       IsError error => ifError(error.value),
       IsResult result => ifResult(result.value),
@@ -12,6 +15,14 @@ sealed class BaseWhich<TError, TResult> {
     return switch (this) {
       IsResult result => IsResult(result.value),
       IsError error => IsError(error.value),
+    };
+  }
+
+  //getOrElse
+  TResult getOrElse(TResult Function(TError erro) ifError) {
+    return switch (this) {
+      IsError error => ifError(error.value),
+      IsResult result => result.value,
     };
   }
 
@@ -50,7 +61,9 @@ sealed class BaseWhich<TError, TResult> {
     };
   }
 
-  BaseWhich<TError, TResult> recovery(BaseWhich<TError, TResult> Function(TError erro) ifError) {
+  BaseWhich<TError, TResult> recovery(
+    BaseWhich<TError, TResult> Function(TError erro) ifError,
+  ) {
     return switch (this) {
       IsError erro => ifError(erro.value),
       IsResult result => IsResult(result.value),

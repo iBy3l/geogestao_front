@@ -158,26 +158,30 @@ class Meta {
 }
 
 initializeSEO() {
-  setPageTitle('Sympllizy');
-  setPageDescription('Sympllizy is a platform for managing your tasks and projects efficiently.');
+  setPageTitle('GeoGestão');
+  setPageDescription(
+    'GeoGestão is a platform for managing your tasks and projects efficiently.',
+  );
   setPageKeywords('task management, project management, productivity');
   setPageAuthor('Your Name');
   setPageViewport('width=device-width, initial-scale=1.0');
   setPageRobots('index, follow');
-  setPageOgTitle('Sympllizy');
-  setPageOgDescription('Sympllizy is a platform for managing your tasks and projects efficiently.');
-  setPageOgImage('assets/images/logos/logo_sympllizy.png');
-  setPageOgUrl('https://sympllizy.com');
+  setPageOgTitle('GeoGestão');
+  setPageOgDescription(
+    'GeoGestão is a platform for managing your tasks and projects efficiently.',
+  );
+  setPageOgImage('assets/images/logos/logo_GeoGestão.png');
+  setPageOgUrl('https://GeoGestão.com');
   setPageOgType('website');
-  setPageOgSiteName('Sympllizy');
+  setPageOgSiteName('GeoGestão');
   setPageOgLocale('en_US');
   setPageOgLocaleAlternate('es_ES');
   setPageOgType('website');
-  setPageOgSiteName('Sympllizy');
+  setPageOgSiteName('GeoGestão');
   setPageOgLocale('en_US');
   setPageOgLocaleAlternate('es_ES');
   setPageOgType('website');
-  setPageOgSiteName('Sympllizy');
+  setPageOgSiteName('GeoGestão');
   setPageOgLocale('en_US');
   setPageOgLocaleAlternate('es_ES');
   setPageOgType('website');

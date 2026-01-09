@@ -9,7 +9,7 @@ class HomeDependency extends Module {
   static const String routeName = '/home/';
 
   @override
-  List<Module> get imports => [CoreModule(), MapsModule()];
+  List<Module> get imports => [CoreModule(), MapsModule(), ClientDependency()];
 
   @override
   void binds(Injector i) {
@@ -22,7 +22,10 @@ class HomeDependency extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child(Modular.initialRoute, child: (context) => HomePage(controller: context.read<HomeController>()));
+    r.child(
+      Modular.initialRoute,
+      child: (context) => HomePage(controller: context.read<HomeController>()),
+    );
     r.module(CreateFormsDependency.routeName, module: CreateFormsDependency());
   }
 }
