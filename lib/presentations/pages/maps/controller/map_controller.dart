@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:geogestao_front/core/consts/strings_const.dart';
 import 'package:geogestao_front/domain/domain.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:window_manager/window_manager.dart';
 
 class MapController extends ChangeNotifier {
   final SearchAddressUsecase searchAddress;
@@ -188,16 +187,9 @@ class MapController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFullscreenDesktop() async {
-    final isFull = await windowManager.isFullScreen();
-    await windowManager.setFullScreen(!isFull);
-  }
-
   void toggleFullscreen() {
     if (kIsWeb) {
       toggleFullscreenWeb();
-    } else {
-      toggleFullscreenDesktop();
     }
   }
 

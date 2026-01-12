@@ -27,7 +27,6 @@ dependencies:
   flutter_masked_text2: ^0.9.1
   flutter_dotenv: ^6.0.0
   mapbox_api: ^1.1.0
-  window_manager: ^0.5.1
   excel: ^4.0.6
   pointer_interceptor: ^0.10.1+2
   flutter_launcher_icons: ^0.14.4
