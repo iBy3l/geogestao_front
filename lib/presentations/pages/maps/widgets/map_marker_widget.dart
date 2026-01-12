@@ -1,39 +1,64 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geogestao_front/domain/entities/client/client_entity.dart';
 
-class MapMarkerWidget extends StatelessWidget {
+class MapMarkerWidget extends StatefulWidget {
   final Point<double> position;
   final Color color;
   final String markerId;
+  final ClientEntity? client;
 
   const MapMarkerWidget({
     super.key,
     required this.position,
     required this.color,
     required this.markerId,
+    this.client,
   });
+
+  @override
+  State<MapMarkerWidget> createState() => _MapMarkerWidgetState();
+}
+
+class _MapMarkerWidgetState extends State<MapMarkerWidget> {
+  bool hovering = false;
 
   @override
   Widget build(BuildContext context) {
     const size = 20.0;
 
     return Positioned(
-      left: position.x - size / 2,
-      top: position.y - size,
-      child: GestureDetector(
-        onTapDown: (details) {
-          debugPrint('Marker $markerId tapped at ${details.globalPosition}');
-          if (markerId == 'search') {
-            _showMarkerMenu(context, details.globalPosition);
-          } else {
-            debugPrint('Marker $markerId tapped');
-          }
-        },
-        child: Icon(
-          markerId == 'search' ? Icons.place : Icons.location_on,
-          color: markerId == 'search' ? Colors.blue : Colors.red,
-          size: size,
+      left: widget.position.x - size / 2,
+      top: widget.position.y - size,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => hovering = true),
+        onExit: (_) => setState(() => hovering = false),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // 📍 Marker
+            GestureDetector(
+              onTapDown: (details) {
+                if (widget.markerId == 'search') {
+                  _showMarkerMenu(context, details.globalPosition);
+                }
+              },
+              child: Icon(
+                widget.markerId == 'search' ? Icons.place : Icons.location_on,
+                color: widget.markerId == 'search' ? Colors.blue : widget.color,
+                size: size,
+              ),
+            ),
+
+            // 🟡 Hover card
+            if (hovering && widget.client != null)
+              Positioned(
+                left: 24,
+                top: -10,
+                child: ClientHoverCard(client: widget.client!),
+              ),
+          ],
         ),
       ),
     );
@@ -53,20 +78,42 @@ class MapMarkerWidget extends StatelessWidget {
         PopupMenuItem(value: 'street', child: Text('Selecionar rua')),
         PopupMenuItem(value: 'zone', child: Text('Criar zona aqui')),
       ],
-    ).then((value) {
-      if (value == null) return;
+    );
+  }
+}
 
-      switch (value) {
-        case 'info':
-          debugPrint('Info do marker');
-          break;
-        case 'street':
-          debugPrint('Selecionar rua');
-          break;
-        case 'zone':
-          debugPrint('Criar zona');
-          break;
-      }
-    });
+class ClientHoverCard extends StatelessWidget {
+  final ClientEntity client;
+
+  const ClientHoverCard({super.key, required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 6,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: 220,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              client.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text('Status: ${client.status.name}'),
+            if (client.phone != null) Text('📞 ${client.phone}'),
+            if (client.email != null) Text('✉️ ${client.email}'),
+          ],
+        ),
+      ),
+    );
   }
 }
