@@ -60,7 +60,6 @@ flutter:
     - assets/images/
     - assets/images/logos/
     - assets/background/
-    - assets/.env
     - assets/file/
     - assets/file/modelo_importacao_clientes.csv
   
