@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geogestao_front/core/core.dart';
+import 'package:geogestao_front/domain/domain.dart';
 import 'package:geogestao_front/presentations/pages/client/states/client_state.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/cep_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/map_controller.dart';
@@ -41,7 +42,7 @@ class ClientPage extends StatelessWidget {
               children: [
                 _Header(
                   searchController: controller.searchController,
-                  onAdd: () => _openAddClientDialog(context),
+                  onAdd: () => _openAddClientDialog(context, null),
                   onClose: controller.toggleClientsPanel,
                   onSearchChanged: controller.seacrhClients,
                 ),
@@ -113,14 +114,60 @@ class ClientPage extends StatelessWidget {
                                           Icons.edit_outlined,
                                           size: 16,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _openAddClientDialog(context, client);
+                                        },
                                       ),
                                       IconButton(
                                         icon: const Icon(
                                           Icons.delete_outlined,
                                           size: 16,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                  'Confirmar Exclusão',
+                                                ),
+                                                content: Text(
+                                                  'Tem certeza que deseja excluir o cliente "${client.name}"? Esta ação não pode ser desfeita.',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(
+                                                          context,
+                                                        ).pop(),
+                                                    child: const Text(
+                                                      'Cancelar',
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    style:
+                                                        ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                        ),
+                                                    onPressed: () async {
+                                                      Navigator.of(
+                                                        context,
+                                                      ).pop();
+                                                      await controller
+                                                          .deleteClient(
+                                                            client.id,
+                                                          );
+                                                    },
+                                                    child: const Text(
+                                                      'Excluir',
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
@@ -207,12 +254,17 @@ class ClientPage extends StatelessWidget {
   // =========================
   // DIALOG ADICIONAR CLIENTE
   // =========================
-  void _openAddClientDialog(BuildContext context) {
+  void _openAddClientDialog(BuildContext context, ClientEntity? client) {
     showDialog(
       context: context,
       builder: (_) {
+        if (client != null) {
+          controller.fillForEdit(client);
+        } else {
+          controller.clearControllers();
+        }
         return AlertDialog(
-          title: const Text('Adicionar Cliente'),
+          title: Text(client == null ? 'Adicionar Cliente' : 'Editar Cliente'),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           content: SizedBox(
             width: 620,
@@ -385,11 +437,20 @@ class ClientPage extends StatelessWidget {
                 final lt = await mapController.searchAutocomplete(address);
                 debugPrint('Endereço completo: $address');
                 debugPrint('LatLng encontrado: $lt');
-                await controller.fetch(
-                  address,
-                  lt?.latitude.toString() ?? '',
-                  lt?.longitude.toString() ?? '',
-                );
+                if (client != null) {
+                  await controller.updateClient(
+                    client.id,
+                    address,
+                    lt?.latitude.toString() ?? '',
+                    lt?.longitude.toString() ?? '',
+                  );
+                } else {
+                  await controller.fetch(
+                    address,
+                    lt?.latitude.toString() ?? '',
+                    lt?.longitude.toString() ?? '',
+                  );
+                }
                 Navigator.of(context).pop();
               },
               child: const Text('Salvar'),
@@ -422,6 +483,7 @@ class _Header extends StatelessWidget {
       height: 56,
       child: Row(
         children: [
+          SpaceWidget.extraSmall(),
           Expanded(
             child: TextField(
               controller: searchController,

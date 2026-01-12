@@ -4,8 +4,10 @@ import '../../../domain/entities/entities.dart';
 
 abstract class ClientDatasource {
   Future<String> createClient({required ClientParam param});
-  // Future<Map<String, dynamic>> updateClient({required ClientParam param});
-  // Future<Map<String, dynamic>> deleteClient({required int clientId});
+  Future<bool> updateClient({
+    required String clientId,
+    required ClientParam param,
+  });
   Future<List<Map<String, dynamic>>> getAllClients({
     String? search,
     String? cnpj,
@@ -13,6 +15,7 @@ abstract class ClientDatasource {
   });
 
   Future<int> importClients({required List<ClientParam> param});
+  Future<bool> deleteClient({required String clientId});
 }
 
 class ClientDatasourceImpl extends ClientDatasource {
@@ -49,7 +52,27 @@ class ClientDatasourceImpl extends ClientDatasource {
   @override
   Future<int> importClients({required List<ClientParam> param}) async {
     final response = await gateway.post(_endpointImport, {
-      'p_clients': param.map((e) => e.toMap()).toList(),
+      'p_clients': param.map((e) => e.importToMap()).toList(),
+    });
+    return response.data;
+  }
+
+  @override
+  Future<bool> deleteClient({required String clientId}) async {
+    final response = await gateway.post(_endpointDelete, {
+      'p_client_id': clientId,
+    });
+    return response.data;
+  }
+
+  @override
+  Future<bool> updateClient({
+    required String clientId,
+    required ClientParam param,
+  }) async {
+    final response = await gateway.post(_endpointUpdate, {
+      'p_client_id': clientId,
+      ...param.toMap(),
     });
     return response.data;
   }

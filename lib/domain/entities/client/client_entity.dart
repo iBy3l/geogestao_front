@@ -56,3 +56,21 @@ class ClientEntity {
     );
   }
 }
+
+class ParsedAddress {
+  final String street;
+  final String number;
+  final String neighborhood;
+  final String city;
+  final String state;
+  final String cep;
+
+  ParsedAddress({
+    required this.street,
+    required this.number,
+    required this.neighborhood,
+    required this.city,
+    required this.state,
+    required this.cep,
+  });
+}

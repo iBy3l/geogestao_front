@@ -1,4 +1,5 @@
 import 'package:geogestao_front/core/core.dart';
+import 'package:geogestao_front/presentations/pages/client/controllers/import_clients_controller.dart';
 
 import '../../../data/datasources/datasources.dart';
 import '../../../data/repositories/repositories.dart';
@@ -19,6 +20,9 @@ class ClientDependency extends Module {
     i.addLazySingleton(CreateClientUsecaseImpl.new);
     i.addLazySingleton(GetListClientsUsecaseImpl.new);
     i.addLazySingleton(ImportClientsUsecase.new);
+    i.addLazySingleton(ImportClientsController.new);
+    i.addLazySingleton(DeleteClientUsecase.new);
+    i.addLazySingleton(UpdateClientUsecase.new);
     i.addLazySingleton(ClientController.new);
   }
 

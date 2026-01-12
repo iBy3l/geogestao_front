@@ -35,6 +35,20 @@ class ClientParam {
       if (email != null) "p_email": email,
     };
   }
+
+  Map<String, dynamic> importToMap() {
+    return {
+      'name': name,
+      'cnpj': cnpj,
+      'owner_name': ownerName,
+      'phone': phone,
+      'email': email,
+      'address': address,
+      'latitude': latitude.isEmpty ? null : latitude,
+      'longitude': longitude.isEmpty ? null : longitude,
+      'status': status.name,
+    };
+  }
 }
 
 enum ClientStatus {

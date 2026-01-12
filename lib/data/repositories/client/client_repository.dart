@@ -47,4 +47,28 @@ class ClientRepositoryImpl extends ClientRepository {
       return response;
     });
   }
+
+  @override
+  Future<BaseWhich<BaseFailure, bool>> deleteClient({
+    required String clientId,
+  }) async {
+    return tryExecute(() async {
+      final response = await datasource.deleteClient(clientId: clientId);
+      return response;
+    });
+  }
+
+  @override
+  Future<BaseWhich<BaseFailure, bool>> updateClient({
+    required String clientId,
+    required ClientParam param,
+  }) async {
+    return tryExecute(() async {
+      final response = await datasource.updateClient(
+        clientId: clientId,
+        param: param,
+      );
+      return response;
+    });
+  }
 }

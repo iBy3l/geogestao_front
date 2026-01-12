@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:geogestao_front/presentations/pages/client/controllers/import_clients_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/cep_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/map_controller.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -10,8 +11,12 @@ import '../../../presentations.dart';
 class HomeController extends BaseController<HomeState> {
   final GetListFormsUsecase getListFormsUsecase;
   final CreateFormsUsecase createFormsUsecase;
-  HomeController(this.getListFormsUsecase, this.createFormsUsecase)
-    : super(HomeInitialStates());
+  final ImportClientsUsecase importClientsUsecase;
+  HomeController(
+    this.getListFormsUsecase,
+    this.createFormsUsecase,
+    this.importClientsUsecase,
+  ) : super(HomeInitialStates());
   MapController mapController = Modular.get<MapController>();
   TextEditingController searchController = TextEditingController();
 

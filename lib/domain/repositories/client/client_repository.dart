@@ -16,4 +16,11 @@ abstract class ClientRepository extends BaseRepository {
   Future<BaseWhich<BaseFailure, int>> importClients({
     required List<ClientParam> param,
   });
+
+  Future<BaseWhich<BaseFailure, bool>> deleteClient({required String clientId});
+
+  Future<BaseWhich<BaseFailure, bool>> updateClient({
+    required String clientId,
+    required ClientParam param,
+  });
 }

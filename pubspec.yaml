@@ -28,6 +28,8 @@ dependencies:
   flutter_dotenv: ^6.0.0
   mapbox_api: ^1.1.0
   window_manager: ^0.5.1
+  excel: ^4.0.6
+  pointer_interceptor: ^0.10.1+2
 
 
 dependency_overrides:
@@ -52,3 +54,6 @@ flutter:
     - assets/images/logos/
     - assets/background/
     - assets/.env
+    - assets/file/
+    - assets/file/modelo_importacao_clientes.xlsx
+  

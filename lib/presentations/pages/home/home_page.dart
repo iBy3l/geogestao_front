@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geogestao_front/presentations/pages/client/import_clients_dialog.dart';
 import 'package:geogestao_front/presentations/pages/maps/widgets/map_widget.dart';
 
 import '/presentations/pages/home/controllers/home_controller.dart';
@@ -17,6 +18,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return ResponsiveLayout(
       metas: widget.controller.meta,
+      import: () async {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => ImportClientsDialog(
+            onImport: (c) async =>
+                await widget.controller.clientController.importClients(c),
+          ),
+        );
+      },
+
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(

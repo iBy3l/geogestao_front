@@ -129,7 +129,8 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
                               children: [
                                 ElevatedButtonWidget(
                                   fixedSize: const Size(200, 40),
-                                  onPressed: () async => widget.import?.call(),
+                                  onPressed: () async =>
+                                      await widget.import?.call(),
                                   iconPrefix: Icons.upload_file,
 
                                   child: Text('Importar CSV'),
