@@ -1,8 +1,6 @@
 import 'package:geogestao_front/presentations/pages/maps/maps_module.dart';
 
 import '/core/core.dart';
-import '/data/data.dart';
-import '/domain/domain.dart';
 import '/presentations/presentations.dart';
 
 class HomeDependency extends Module {
@@ -13,10 +11,6 @@ class HomeDependency extends Module {
 
   @override
   void binds(Injector i) {
-    i.addLazySingleton<FormsDatasource>(FormsDatasourceImpl.new);
-    i.addLazySingleton<FormsRepository>(FormsRepositoryImpl.new);
-    i.addLazySingleton<GetListFormsUsecase>(GetListFormsUsecaseImpl.new);
-    i.addLazySingleton<CreateFormsUsecase>(CreateFormsUsecaseImpl.new);
     i.addLazySingleton(HomeController.new);
   }
 
@@ -26,6 +20,5 @@ class HomeDependency extends Module {
       Modular.initialRoute,
       child: (context) => HomePage(controller: context.read<HomeController>()),
     );
-    r.module(CreateFormsDependency.routeName, module: CreateFormsDependency());
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:geogestao_front/presentations/pages/client/controllers/import_clients_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/cep_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/map_controller.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -9,14 +8,8 @@ import '/domain/domain.dart';
 import '../../../presentations.dart';
 
 class HomeController extends BaseController<HomeState> {
-  final GetListFormsUsecase getListFormsUsecase;
-  final CreateFormsUsecase createFormsUsecase;
   final ImportClientsUsecase importClientsUsecase;
-  HomeController(
-    this.getListFormsUsecase,
-    this.createFormsUsecase,
-    this.importClientsUsecase,
-  ) : super(HomeInitialStates());
+  HomeController(this.importClientsUsecase) : super(HomeInitialStates());
   MapController mapController = Modular.get<MapController>();
   TextEditingController searchController = TextEditingController();
 
@@ -26,19 +19,8 @@ class HomeController extends BaseController<HomeState> {
   @override
   void init() async {}
 
-  void goToCreateForm() {
-    Modular.to.pushNamed(CreateFormsDependency.routePath);
-  }
-
   void goToFormView(FormsEntity form) {
     Modular.to.pushNamed('/to/${form.slug}');
-  }
-
-  void goToCreateFormFromTemplate(FormsEntity form) {
-    Modular.to.pushNamed(
-      '${CreateFormsDependency.routePath}${form.id}',
-      arguments: form.id,
-    );
   }
 
   Meta meta = Meta(
