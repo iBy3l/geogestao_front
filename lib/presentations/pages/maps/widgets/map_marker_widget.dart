@@ -5,14 +5,12 @@ import 'package:geogestao_front/domain/entities/client/client_entity.dart';
 
 class MapMarkerWidget extends StatefulWidget {
   final Point<double> position;
-  final Color color;
   final String markerId;
   final ClientEntity? client;
 
   const MapMarkerWidget({
     super.key,
     required this.position,
-    required this.color,
     required this.markerId,
     this.client,
   });
@@ -45,8 +43,8 @@ class _MapMarkerWidgetState extends State<MapMarkerWidget> {
                 }
               },
               child: Icon(
-                widget.markerId == 'search' ? Icons.place : Icons.location_on,
-                color: widget.markerId == 'search' ? Colors.blue : widget.color,
+                Icons.location_on,
+                color: widget.client?.status.color,
                 size: size,
               ),
             ),
@@ -108,7 +106,18 @@ class ClientHoverCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            Text('Status: ${client.status.name}'),
+            Container(
+              margin: const EdgeInsets.only(left: 8, top: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: client.status.color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                client.status.decription,
+                style: TextStyle(color: client.status.color, fontSize: 12),
+              ),
+            ),
             if (client.phone != null) Text('📞 ${client.phone}'),
             if (client.email != null) Text('✉️ ${client.email}'),
           ],

@@ -7,7 +7,7 @@ import 'package:geogestao_front/presentations/pages/maps/widgets/animated_map_bu
 import 'package:geogestao_front/presentations/pages/maps/widgets/map_controls.dart';
 import 'package:geogestao_front/presentations/pages/maps/widgets/map_view.dart';
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   final MapController controller;
   final ClientController clientController;
   final CepController cepController;
@@ -20,14 +20,28 @@ class MapPage extends StatelessWidget {
   });
 
   @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  @override
+  void didUpdateWidget(covariant MapPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.onLayoutChanged();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: controller,
+      animation: widget.controller,
       builder: (_, __) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          padding: controller.isFullscreen
+          padding: widget.controller.isFullscreen
               ? EdgeInsets.zero
               : const EdgeInsets.all(16),
           child: Stack(
@@ -38,14 +52,14 @@ class MapPage extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     switchInCurve: Curves.easeOut,
                     switchOutCurve: Curves.easeIn,
-                    child: clientController.isClientsPanelOpen
+                    child: widget.clientController.isClientsPanelOpen
                         ? SizedBox(
                             key: const ValueKey('clients_panel_open'),
                             width: 360,
                             child: ClientPage(
-                              controller: clientController,
-                              cepController: cepController,
-                              mapController: controller,
+                              controller: widget.clientController,
+                              cepController: widget.cepController,
+                              mapController: widget.controller,
                             ),
                           )
                         : const SizedBox(
@@ -56,8 +70,8 @@ class MapPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: MapView(
-                      controller: controller,
-                      clientController: clientController,
+                      controller: widget.controller,
+                      clientController: widget.clientController,
                     ),
                   ),
                 ],
@@ -66,23 +80,14 @@ class MapPage extends StatelessWidget {
               Positioned(
                 right: 16,
                 bottom: 100,
-                child: MapControls(controller: controller),
+                child: MapControls(controller: widget.controller),
               ),
-              if (!clientController.isClientsPanelOpen)
-                Positioned(
-                  left: 16,
-                  top: 80,
-                  child: AnimatedMapButton(
-                    onTap: clientController.toggleClientsPanel,
-                    icon: const Icon(Icons.people),
-                  ),
-                ),
 
               Positioned(
                 top: 32,
                 right: 16,
                 child: AnimatedMapButton(
-                  onTap: controller.toggleFullscreen,
+                  onTap: widget.controller.toggleFullscreen,
                   icon: const Icon(Icons.fullscreen),
                 ),
               ),

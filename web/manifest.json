@@ -1,11 +1,11 @@
 {
-    "name": "geogestao_front",
-    "short_name": "geogestao_front",
+    "name": "GeoGestão",
+    "short_name": "GeoGestão",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "GeoGestão é uma plataforma inteligente para gestão geográfica de clientes, territórios e operações.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

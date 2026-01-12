@@ -406,7 +406,20 @@ class ClientPage extends StatelessWidget {
                     items: controller.values.map((e) {
                       return DropdownMenuItem(
                         value: e,
-                        child: Text(e.decription),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 12,
+                              height: 12,
+                              margin: const EdgeInsets.only(right: 8),
+                              decoration: BoxDecoration(
+                                color: e.color,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Text(e.decription),
+                          ],
+                        ),
                       );
                     }).toList(),
                     initialValue: controller.selectedStatus,

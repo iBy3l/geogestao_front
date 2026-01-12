@@ -72,6 +72,19 @@ class MapController extends ChangeNotifier {
     _updateScreenMarkers(); // ✅
   }
 
+  void onLayoutChanged() {
+    if (mapbox == null) return;
+
+    final camera = mapbox!.cameraPosition;
+    if (camera == null) return;
+
+    // 🔥 FORÇA O MAPA A REDESENHAR
+    mapbox!.moveCamera(CameraUpdate.newCameraPosition(camera));
+
+    // Atualiza markers depois do redraw
+    _updateScreenMarkers();
+  }
+
   final screenMarkers = <ScreenMarker>[];
 
   bool get canZoomIn => _currentZoom < maxZoom;

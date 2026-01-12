@@ -1,5 +1,6 @@
 import 'package:geogestao_front/core/core.dart';
 import 'package:geogestao_front/presentations/pages/client/controllers/import_clients_controller.dart';
+import 'package:geogestao_front/presentations/pages/maps/maps_module.dart';
 
 import '../../../data/datasources/datasources.dart';
 import '../../../data/repositories/repositories.dart';
@@ -11,7 +12,7 @@ class ClientDependency extends Module {
   static const String routeName = '/client';
 
   @override
-  List<Module> get imports => [CoreModule()];
+  List<Module> get imports => [CoreModule(), MapsModule()];
 
   @override
   void exportedBinds(Injector i) {

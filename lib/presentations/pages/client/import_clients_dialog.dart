@@ -21,7 +21,7 @@ const exampleRows = [
     'João Silva',
     '11991234567',
     'joao@mercado.com',
-    'Rua do Bosque, 136 - Barra Funda - SP',
+    'Rua do Bosque, 136 - Barra Funda - SP - 01136-000',
     'active',
   ],
   [
@@ -30,7 +30,7 @@ const exampleRows = [
     'Maria Santos',
     '11990001122',
     'maria@padaria.com',
-    'Av Pacaembu, 500 - São Paulo - SP',
+    'Av Pacaembu, 500 - São Paulo - SP - 01234-000',
     'lead',
   ],
 ];
@@ -60,7 +60,7 @@ class _ImportClientsDialogState extends State<ImportClientsDialog> {
   @override
   void dispose() {
     controller.removeListener(_onControllerChanged);
-    controller.dispose();
+
     super.dispose();
   }
 
@@ -121,8 +121,8 @@ class _ImportClientsDialogState extends State<ImportClientsDialog> {
                               onPressed: () {
                                 controller.downloadAssetFile(
                                   assetPath:
-                                      'assets/file/modelo_importacao_clientes.xlsx',
-                                  fileName: 'modelo_importacao_clientes.xlsx',
+                                      'assets/file/modelo_importacao_clientes.csv',
+                                  fileName: 'modelo_importacao_clientes.csv',
                                 );
                               },
                               icon: const Icon(Icons.download),
@@ -242,8 +242,9 @@ class _ImportClientsDialogState extends State<ImportClientsDialog> {
                       onPressed:
                           controller.clients.isEmpty || controller.isLoading
                           ? null
-                          : () async =>
-                                await widget.onImport(controller.clients),
+                          : () async {
+                              return await widget.onImport(controller.clients);
+                            },
                       icon: controller.isLoading
                           ? const SizedBox(
                               width: 16,

@@ -36,6 +36,30 @@ class ClientParam {
     };
   }
 
+  ClientParam copyWith({
+    String? address,
+    String? cnpj,
+    String? latitude,
+    String? longitude,
+    String? name,
+    ClientStatus? status,
+    String? ownerName,
+    String? phone,
+    String? email,
+  }) {
+    return ClientParam(
+      address: address ?? this.address,
+      cnpj: cnpj ?? this.cnpj,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      ownerName: ownerName ?? this.ownerName,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+    );
+  }
+
   Map<String, dynamic> importToMap() {
     return {
       'name': name,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geogestao_front/core/core.dart';
 import 'package:geogestao_front/presentations/pages/client/controllers/import_clients_controller.dart';
 import 'package:geogestao_front/presentations/pages/maps/controller/cep_controller.dart';
+import 'package:geogestao_front/presentations/pages/maps/controller/map_controller.dart';
 
 import '/domain/entities/entities.dart';
 import '/domain/usecases/usecases.dart';
@@ -43,6 +44,7 @@ class ClientController extends BaseController<ClientStates> {
   TextEditingController ownerNameController = TextEditingController();
   ClientStatus selectedStatus = ClientStatus.active;
   List<ClientStatus> get values => ClientStatus.values;
+  MapController mapController = Modular.get<MapController>();
 
   selectStatus(ClientStatus? status) {
     if (status != null) {
@@ -90,10 +92,14 @@ class ClientController extends BaseController<ClientStates> {
 
   bool _isClientsPanelOpen = true;
   bool get isClientsPanelOpen => _isClientsPanelOpen;
-
   void toggleClientsPanel() {
     _isClientsPanelOpen = !_isClientsPanelOpen;
     notifyListeners();
+
+    // ⚠️ ESSENCIAL PARA MAPBOX
+    Future.delayed(const Duration(milliseconds: 50), () {
+      mapController.onLayoutChanged();
+    });
   }
 
   Future<void> importClients(List<ClientParam> clients) async {

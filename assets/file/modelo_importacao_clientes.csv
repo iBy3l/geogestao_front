@@ -1,0 +1,4 @@
+Nome,CNPJ/CPF,Proprietário,Telefone,Email,Endereço,Status
+Mercado Central,75265933000100,João Silva,11991234567,joao@mercado.com,"Rua do Bosque, 136 - Barra Funda - SP - 01136000",active
+Padaria São Jorge,11222333000199,Maria Santos,11990001122,maria@padaria.com,"Av Pacaembu, 500 - São Paulo - SP - 01234-000",lead
+Loja Exemplo,98765432100,,,,"Av. Rio Branco, 1122 - Campos Elíseos - São Paulo - SP - 01206-001",inactive

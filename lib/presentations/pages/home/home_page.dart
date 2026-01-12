@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geogestao_front/presentations/pages/client/import_clients_dialog.dart';
+import 'package:geogestao_front/presentations/pages/maps/widgets/animated_map_button.dart';
 import 'package:geogestao_front/presentations/pages/maps/widgets/map_widget.dart';
 
 import '/presentations/pages/home/controllers/home_controller.dart';
@@ -46,10 +47,34 @@ class _HomePageState extends State<HomePage> {
           ),
           height: double.infinity,
           width: double.infinity,
-          child: MapPage(
-            controller: widget.controller.mapController,
-            clientController: widget.controller.clientController,
-            cepController: widget.controller.cepController,
+          child: AnimatedBuilder(
+            animation: widget.controller.clientController,
+            builder: (context, _) {
+              return Stack(
+                children: [
+                  /// MAPA (base)
+                  MapPage(
+                    controller: widget.controller.mapController,
+                    clientController: widget.controller.clientController,
+                    cepController: widget.controller.cepController,
+                  ),
+
+                  /// BOTÃO FLUTUANTE (abrir painel)
+                  if (!widget.controller.clientController.isClientsPanelOpen)
+                    Positioned(
+                      left: 16,
+                      top: 16,
+                      child: AnimatedMapButton(
+                        onTap: widget
+                            .controller
+                            .clientController
+                            .toggleClientsPanel,
+                        icon: const Icon(Icons.arrow_right),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ),
       ),

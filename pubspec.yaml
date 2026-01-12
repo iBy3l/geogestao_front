@@ -30,6 +30,9 @@ dependencies:
   window_manager: ^0.5.1
   excel: ^4.0.6
   pointer_interceptor: ^0.10.1+2
+  flutter_launcher_icons: ^0.14.4
+  flutter_svg: ^2.2.3
+  diacritic: ^0.1.6
 
 
 dependency_overrides:
@@ -44,6 +47,11 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   mapbox_gl:
     path: ../maps
+
+flutter_icons:
+  image_path: "assets/images/logos/icon.png"
+  web:
+    generate: true
 flutter:
   uses-material-design: true
 
@@ -55,5 +63,5 @@ flutter:
     - assets/background/
     - assets/.env
     - assets/file/
-    - assets/file/modelo_importacao_clientes.xlsx
+    - assets/file/modelo_importacao_clientes.csv
   

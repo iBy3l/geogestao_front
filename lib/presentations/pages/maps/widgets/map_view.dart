@@ -68,7 +68,7 @@ class MapView extends StatelessWidget {
                         return MapMarkerWidget(
                           markerId: m.id,
                           position: m.screenPosition, // ✅ pixels
-                          color: m.color,
+
                           client: state.clients.firstWhere((c) => c.id == m.id),
                         );
                       }).toList(),

@@ -10,11 +10,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geogestao_front/domain/domain.dart';
+import 'package:geogestao_front/presentations/pages/maps/controller/map_controller.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImportClientsController extends ChangeNotifier {
   final ImportClientsUsecase importClientsUsecase;
-  ImportClientsController({required this.importClientsUsecase});
+  final MapController mapController;
+  ImportClientsController({
+    required this.importClientsUsecase,
+    required this.mapController,
+  });
 
   /// Estado
   List<ClientParam> clients = [];
@@ -144,10 +149,6 @@ class ImportClientsController extends ChangeNotifier {
     }
   }
 
-  /// =============================
-  /// Mapping + validação
-  /// =============================
-
   ClientParam? _mapRow(
     List<String> headers,
     String? Function(String key) cell,
@@ -159,7 +160,25 @@ class ImportClientsController extends ChangeNotifier {
       return null;
     }
 
-    final statusRaw = (cell('status') ?? 'active').toLowerCase();
+    String address = cell('endereço') ?? '';
+    String statusRaw = (cell('status') ?? 'active').toLowerCase();
+
+    // 🔥 CORREÇÃO CRÍTICA AQUI
+    final statusLooksLikeAddress = RegExp(
+      r'^\d+',
+    ).hasMatch(statusRaw); // começa com número
+
+    final addressHasNumber = RegExp(r'\d').hasMatch(address);
+
+    if (statusLooksLikeAddress && !addressHasNumber) {
+      // recompõe o endereço completo
+      address = '$address, ${cell('status')}'.trim();
+      statusRaw = 'active';
+    }
+
+    debugPrint(
+      'Importing client: $name, $cnpj, status=$statusRaw, address=$address',
+    );
 
     return ClientParam(
       name: name,
@@ -167,7 +186,7 @@ class ImportClientsController extends ChangeNotifier {
       ownerName: cell('proprietário'),
       phone: cell('telefone'),
       email: cell('email'),
-      address: cell('endereço') ?? '',
+      address: address,
       latitude: '',
       longitude: '',
       status: ClientStatus.values.firstWhere(
@@ -188,7 +207,7 @@ class ImportClientsController extends ChangeNotifier {
     required String fileName,
   }) async {
     final ByteData data = await rootBundle.load(
-      'file/modelo_importacao_clientes.xlsx',
+      'file/modelo_importacao_clientes.csv',
     );
 
     final Uint8List bytes = data.buffer.asUint8List();
@@ -217,7 +236,6 @@ class ImportClientsController extends ChangeNotifier {
 
   int imported = 0;
   int total = 0;
-
   Future<void> importInBatches(
     List<ClientParam> clients, {
     int batchSize = 20,
@@ -230,16 +248,34 @@ class ImportClientsController extends ChangeNotifier {
     for (var i = 0; i < clients.length; i += batchSize) {
       final batch = clients.skip(i).take(batchSize).toList();
 
-      final result = await importClientsUsecase(param: batch);
+      // 🔥 Geocodifica TODO o batch antes de enviar
+      final enrichedBatch = <ClientParam>[];
+
+      for (final client in batch) {
+        try {
+          final latLng = await mapController.searchAutocomplete(client.address);
+
+          enrichedBatch.add(
+            client.copyWith(
+              latitude: latLng?.latitude.toString() ?? '',
+              longitude: latLng?.longitude.toString() ?? '',
+            ),
+          );
+        } catch (e) {
+          // fallback: envia sem coordenadas
+          enrichedBatch.add(client);
+        }
+      }
+
+      final result = await importClientsUsecase(param: enrichedBatch);
 
       result.ways(
         (count) {
           imported += count;
-
           notifyListeners();
         },
         (error) {
-          // Você pode logar ou mostrar erro parcial
+          debugPrint('Erro ao importar batch: $error');
         },
       );
     }
